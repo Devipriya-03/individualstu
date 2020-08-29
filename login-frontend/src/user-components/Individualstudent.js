@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
+import {Redirect} from 'react-router';
 import {
   Card,
   CardTitle,
@@ -78,7 +79,8 @@ class Individual extends Component {
                   gpa:response.data[0]['b_tech_gpa'],
                   branch:response.data[0]['Branch'],
                   pass_category:response.data[0]['pass_category']
-              })  
+              }) 
+              console.log(this.state.SSC); 
           })
           .catch(function(err){
               console.log(err);
@@ -89,7 +91,7 @@ class Individual extends Component {
         e.preventDefault();
         const obj={
            // id: this.state.first_name,
-            SSC : this.state.SSC_percent
+            SSC : this.state.SSC
         };
         Axios.post("http://localhost/login-backend/individualupdate.php?id="+this.props.login,obj)
             .then(res => console.log(res.data)
@@ -117,7 +119,9 @@ class Individual extends Component {
                                onChange={this.onChangetenth}  />
                             </td>
                             <td>
-                              <input type={"submit"} value={"Submit"} className={"btn btn-primary"}/>
+                              <div className={"form-group"}>
+                                  <input type={"submit"} value={"Submit"} className={"btn btn-primary"}/>
+                              </div>
                             </td>
                           </tr>
                         </tbody>
@@ -197,7 +201,7 @@ class Individual extends Component {
         <Row>
         <Table striped className="placements" bordered responsive>
             <tr>
-              <th colspan="2">Placements Analysis</th>
+              <th colSpan="2">Placements Analysis</th>
             </tr>
          
          
@@ -214,7 +218,7 @@ class Individual extends Component {
               <td md="6">Number of technical test cleared:0</td>
             </tr>
             <tr>
-              <td colspan="2">Number of Offer Letters:0</td>
+              <td colSpan="2">Number of Offer Letters:0</td>
             </tr>
          
         </Table>
