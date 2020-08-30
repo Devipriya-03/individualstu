@@ -26,6 +26,11 @@ import Cocubes from "./Cocubes";
 import Amcat from "./Amcat";
 import ITA from "./ITA";
 
+import TwelveMarks from "./comp/TwelveMarks";
+import BtechMarks from "./comp/BtechMarks";
+import Branch from "./comp/Branch";
+import Pass from "./comp/Pass";
+import Section from "./comp/Section";
 
 class Individual extends Component {
         constructor(props){
@@ -37,12 +42,16 @@ class Individual extends Component {
               inter:0,
               gpa:0,
               branch:"",
-              pass_category:""
+              pass_category:"",
+              sect:""
+
           }
           this.handleModaltenth=this.handleModaltenth.bind(this);
           this.onChangetenth = this.onChangetenth.bind(this);
-          this.onSubmit = this.onSubmit.bind(this);
           
+          this.onSubmittenth = this.onSubmittenth.bind(this);
+          
+
       }
       /*change=async (e)=>{
           e.preventDefault();
@@ -70,6 +79,8 @@ class Individual extends Component {
         });
       }
 
+      
+
       componentDidMount(){
           Axios.get("http://localhost:80/login-backend/individualstudentdetails.php?id="+this.props.login)
           .then(response => {
@@ -78,7 +89,8 @@ class Individual extends Component {
                   inter:response.data[0]['inter_percent'],
                   gpa:response.data[0]['b_tech_gpa'],
                   branch:response.data[0]['Branch'],
-                  pass_category:response.data[0]['pass_category']
+                  pass_category:response.data[0]['pass_category'],
+                  sect:response.data[0]['section']
               }) 
               console.log(this.state.SSC); 
           })
@@ -87,16 +99,17 @@ class Individual extends Component {
           })
       }
 
-      onSubmit(e){
+      onSubmittenth(e){
         e.preventDefault();
         const obj={
-           // id: this.state.first_name,
             SSC : this.state.SSC
         };
         Axios.post("http://localhost/login-backend/individualupdate.php?id="+this.props.login,obj)
             .then(res => console.log(res.data)
             );
     }
+
+    
 
   render(){
   return (
@@ -110,7 +123,7 @@ class Individual extends Component {
                   <Modal show={this.state.show} onHide={()=>this.handleModaltenth()} >
                     <Modal.Header closeButton>Edit Tenth Marks</Modal.Header>
                     <Modal.Body>
-                      <form onSubmit={this.onSubmit}>
+                      <form onSubmit={this.onSubmittenth}>
                         <Table className="TenthMarks" responsive>
                         <tbody>
                         <tr>
@@ -132,18 +145,12 @@ class Individual extends Component {
                 </Card>
             </Col>
             <Col md="4">
-              <Card color="warning" className="Rounded p-3">
-                <CardTitle align="left">{this.state.inter}</CardTitle>
-                <CardSubtitle align="left">Inter Percentage </CardSubtitle> 
-                  
-              </Card>
+             
+                  <TwelveMarks twe={this.props.login}/>
+    
             </Col>
             <Col md="4">
-              <Card color="danger" className="Rounded p-3">
-                <CardTitle align="left">{(this.state.gpa*9.5).toFixed(2)}</CardTitle>
-                <CardSubtitle align="left">B Tech Percentage </CardSubtitle> 
-    
-              </Card>
+              <BtechMarks btech={this.props.login}/>
             </Col>
         
 
@@ -153,22 +160,13 @@ class Individual extends Component {
             <br></br>
             <Row>
               <Col md="4">
-                <Alert color="success" className="Rounded p-3">
-                  <CardTitle align="left">{this.state.branch.slice(0,3)}</CardTitle>
-                  <CardSubtitle align="left">Branch</CardSubtitle>
-                </Alert>
+                <Branch brn={this.props.login}/>
               </Col>
               <Col md="4">
-                <Alert color="warning" className="Rounded p-3">
-                  <CardTitle align="left">{this.state.pass_category}</CardTitle>
-                  <CardSubtitle align="left">Pass Category</CardSubtitle>
-                </Alert>
+                <Pass pas={this.props.login} />
               </Col>
               <Col md="4">
-                <Alert color="danger" className="Rounded p-3">
-                  <CardTitle align="left">{this.state.branch.slice(3,5)}</CardTitle>
-                  <CardSubtitle align="left">Section</CardSubtitle>
-                </Alert>
+                <Section sec={this.props.login} />
               </Col>
             </Row>
           </Collapsible>
